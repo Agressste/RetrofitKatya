@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.SearchView.OnQueryTextListener
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofitlesson.adapter.ProductAdapter
@@ -46,14 +47,22 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val mainApi = retrofit.create(MainApi::class.java)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val list = mainApi.getAllProducts()
-                runOnUiThread {
-                    binding.apply {
-                        adapter.submitList(list.products)
+        binding.sv.setOnQueryTextListener(object : OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(text: String?): Boolean {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val list = text?.let { mainApi.getProductsByName(it) }
+                    runOnUiThread {
+                        binding.apply {
+                            adapter.submitList(list?.products)
+                        }
                     }
                 }
-        }
-
+                return true
+            }
+        })
     }
 }
