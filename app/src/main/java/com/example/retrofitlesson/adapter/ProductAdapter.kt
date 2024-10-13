@@ -11,16 +11,16 @@ import com.example.retrofitlesson.databinding.ListItemBinding
 import com.example.retrofitlesson.retrofit.Product
 
 class ProductAdapter : ListAdapter<Product, ProductAdapter.Holder>(Comparator()) {
-    class Holder(view: View) : RecyclerView.ViewHolder(view) {
+    class Holder(view: View) : RecyclerView.ViewHolder(view){
         private val binding = ListItemBinding.bind(view)
+
         fun bind(product: Product)= with(binding){
             title.text = product.title
             description.text = product.description
-
         }
     }
 
-    class Comparator : DiffUtil.ItemCallback<Product>() {
+    class Comparator : DiffUtil.ItemCallback<Product>(){
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem.id == newItem.id
         }
