@@ -44,23 +44,7 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val mainApi = retrofit.create(MainApi::class.java)
 
-
-
-
         var user: User? = null
-
-        CoroutineScope(Dispatchers.IO).launch {
-            user = mainApi.auth(
-                AuthRequest(
-                    "emilys",
-                    "emilyspass"
-                )
-            )
-            runOnUiThread {
-                supportActionBar?.title = user?.firstName
-            }
-        }
-
 
         binding.sv.setOnQueryTextListener(object : OnQueryTextListener{
             override fun onQueryTextSubmit(text: String?): Boolean {
